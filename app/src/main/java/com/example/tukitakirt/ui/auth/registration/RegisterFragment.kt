@@ -1,15 +1,15 @@
 package com.example.tukitakirt.ui.auth.registration
-
-
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.tukitakirt.base.BaseFragment
-import com.example.tukitakirt.data.RequestUserRegister
+import com.example.tukitakirt.data.register.RequestUserRegister
 import com.example.tukitakirt.databinding.FragmentRegisterBinding
-import com.example.tukitakirt.utils.registrationErrorMessage
-import com.example.tukitakirt.utils.registrationSuccessMessage
+import com.example.tukitakirt.utils.DummyImgLink
+import com.example.tukitakirt.utils.errorMessage
+import com.example.tukitakirt.utils.successMessage
 import dagger.hilt.android.AndroidEntryPoint
 
 //cs-13
@@ -25,14 +25,13 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
         viewModel.responseRegistration.observe(viewLifecycleOwner) {
             when (it) {
-                registrationSuccessMessage -> {
-                    Toast.makeText(requireContext(), registrationSuccessMessage, Toast.LENGTH_LONG)
+                successMessage -> {
+                    Toast.makeText(requireContext(), successMessage, Toast.LENGTH_LONG)
                         .show()
 
                 }
-
-                registrationErrorMessage -> {
-                    Toast.makeText(requireContext(), registrationErrorMessage, Toast.LENGTH_LONG)
+                errorMessage -> {
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG)
                         .show()
                 }
 
@@ -47,17 +46,29 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         }
 
 
-
         binding.registerButton.setOnClickListener {
             binding.apply {
                 val name = nameEditText.text.toString()
                 val email = emailEditText.text.toString()
                 val password = passwordEditText.text.toString()
                 val confirmPassword = confirmPasswordEditText.text.toString()
-                val request = RequestUserRegister(name = name, email = email, password = password)
+
+                val request = RequestUserRegister(
+                    name = name,
+                    email = email,
+                    password = password,
+                    createdAt = System.currentTimeMillis(),
+                    image = DummyImgLink)
                 viewModel.registration(request)
 
             }
+
+
+        }
+
+        binding.loginTextView.setOnClickListener {
+
+            findNavController().popBackStack()
 
 
         }

@@ -1,6 +1,7 @@
 package com.example.tukitakirt.di
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +18,15 @@ class FireBaseProvider {
     @Singleton
     fun provideAuth(): FirebaseAuth {
         return FirebaseAuth.getInstance()
+    }
+
+
+    //CS-25
+
+    @Provides
+    @Singleton
+    fun provideDb(): FirebaseDatabase {
+        return FirebaseDatabase.getInstance()
     }
 
 }

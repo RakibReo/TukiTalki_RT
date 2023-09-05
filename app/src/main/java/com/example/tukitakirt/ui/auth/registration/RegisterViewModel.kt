@@ -5,10 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tukitakirt.data.RequestUserRegister
+import com.example.tukitakirt.data.register.RequestUserRegister
 import com.example.tukitakirt.repositories.AuthRepo
-import com.example.tukitakirt.utils.registrationErrorMessage
-import com.example.tukitakirt.utils.registrationSuccessMessage
+import com.example.tukitakirt.repositories.UserRepo
+import com.example.tukitakirt.utils.errorMessage
+import com.example.tukitakirt.utils.successMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,15 +17,15 @@ import javax.inject.Inject
 //Cs-10
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(private val repo: AuthRepo) : ViewModel() {
+class RegisterViewModel @Inject constructor(private val repo: AuthRepo,
+                                            private val userRepo: UserRepo)    //CS
+    : ViewModel() {
 
-    private var _resposne = MutableLiveData<String>()
+    private var _resposne = MutableLiveData <String>()
     val responseRegistration: LiveData<String> = _resposne
 
 
-    fun registration(
-        requestUserRegister: RequestUserRegister
-    ) {
+    fun registration(requestUserRegister: RequestUserRegister) {
 
 
         viewModelScope.launch {
@@ -33,7 +34,28 @@ class RegisterViewModel @Inject constructor(private val repo: AuthRepo) : ViewMo
                 //CS-12
 
                 if (it.isSuccessful) {
-                    _resposne.postValue(registrationSuccessMessage)
+                    requestUserRegister.userId= it.result.user!!.uid
+
+
+
+                    viewModelScope.launch {
+                        userRepo.createUser(requestUserRegister).addOnCompleteListener { dbIt ->
+
+                            if (dbIt.isSuccessful) {
+                                _resposne.postValue(successMessage)
+                            } else {
+                                _resposne.postValue(errorMessage)
+                                _resposne.postValue(
+                                    it.exception?.localizedMessage ?: errorMessage
+                                )
+                            }
+
+                        }
+
+
+                    }
+
+                    //_resposne.postValue(successMessage)
                 }
 
 
@@ -50,7 +72,7 @@ class RegisterViewModel @Inject constructor(private val repo: AuthRepo) : ViewMo
                 Log.d("TAG", "${it.localizedMessage}: ")
 
 
-                _resposne.postValue(it.localizedMessage ?: registrationErrorMessage)
+                _resposne.postValue(it.localizedMessage ?: errorMessage)
 
             }
 
