@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tukitakirt.repositories.AuthRepo
-import com.example.tukitakirt.utils.errorMessage
-import com.example.tukitakirt.utils.successMessage
+import com.example.tukitakirt.utils.ErrorMessage
+import com.example.tukitakirt.utils.SuccessMessage
 import com.mehedi.tukitalki.data.login.RequestUserLogin
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,7 +28,7 @@ class LoginViewModel @Inject constructor(private val repo: AuthRepo) : ViewModel
             repo.login(request).addOnCompleteListener {
 
                 if (it.isSuccessful) {
-                    _resposne.postValue(successMessage)
+                    _resposne.postValue(SuccessMessage)
                 }
 //                else {
 //                   // _resposne.postValue(rNNGzdBrXymtBL9WHZTXsLZrhihHoq9C9H)
@@ -41,7 +41,7 @@ class LoginViewModel @Inject constructor(private val repo: AuthRepo) : ViewModel
                 Log.d("TAG", "${it.localizedMessage}: ")
 
 
-                _resposne.postValue(it.localizedMessage ?: errorMessage)
+                _resposne.postValue(it.localizedMessage ?: ErrorMessage)
 
             }
 

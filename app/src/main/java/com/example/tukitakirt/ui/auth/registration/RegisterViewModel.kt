@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.tukitakirt.data.register.RequestUserRegister
 import com.example.tukitakirt.repositories.AuthRepo
 import com.example.tukitakirt.repositories.UserRepo
-import com.example.tukitakirt.utils.errorMessage
-import com.example.tukitakirt.utils.successMessage
+import com.example.tukitakirt.utils.ErrorMessage
+import com.example.tukitakirt.utils.SuccessMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(private val repo: AuthRepo,
-                                            private val userRepo: UserRepo)    //CS
+                                            private val userRepo: UserRepo)    //CS 27
     : ViewModel() {
 
     private var _resposne = MutableLiveData <String>()
@@ -41,12 +41,18 @@ class RegisterViewModel @Inject constructor(private val repo: AuthRepo,
                     viewModelScope.launch {
                         userRepo.createUser(requestUserRegister).addOnCompleteListener { dbIt ->
 
+                            //CS27
+
+
                             if (dbIt.isSuccessful) {
-                                _resposne.postValue(successMessage)
+                                _resposne.postValue(SuccessMessage)
                             } else {
-                                _resposne.postValue(errorMessage)
+                                _resposne.postValue(ErrorMessage)
+
+
+
                                 _resposne.postValue(
-                                    it.exception?.localizedMessage ?: errorMessage
+                                    it.exception?.localizedMessage ?: ErrorMessage
                                 )
                             }
 
@@ -72,7 +78,7 @@ class RegisterViewModel @Inject constructor(private val repo: AuthRepo,
                 Log.d("TAG", "${it.localizedMessage}: ")
 
 
-                _resposne.postValue(it.localizedMessage ?: errorMessage)
+                _resposne.postValue(it.localizedMessage ?: ErrorMessage)
 
             }
 

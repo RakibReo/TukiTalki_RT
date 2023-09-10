@@ -7,8 +7,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.tukitakirt.R
 import com.example.tukitakirt.base.BaseFragment
 import com.example.tukitakirt.databinding.FragmentLoginBinding
-import com.example.tukitakirt.utils.errorMessage
-import com.example.tukitakirt.utils.successMessage
+import com.example.tukitakirt.utils.ErrorMessage
+import com.example.tukitakirt.utils.SuccessMessage
 import com.google.firebase.auth.FirebaseAuth
 import com.mehedi.tukitalki.data.login.RequestUserLogin
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,16 +41,16 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
         viewModel.responseLogin.observe(viewLifecycleOwner) {
             when (it) {
-                successMessage -> {
-                    Toast.makeText(requireContext(), successMessage, Toast.LENGTH_LONG)
+                SuccessMessage -> {
+                    Toast.makeText(requireContext(), SuccessMessage, Toast.LENGTH_LONG)
                         .show()
 
                     findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
 
                 }
 
-                errorMessage -> {
-                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG)
+                ErrorMessage -> {
+                    Toast.makeText(requireContext(), ErrorMessage, Toast.LENGTH_LONG)
                         .show()
                 }
 
