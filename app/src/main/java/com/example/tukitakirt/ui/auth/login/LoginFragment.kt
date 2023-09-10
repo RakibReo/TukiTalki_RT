@@ -26,6 +26,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //CS-30 for save the login data
+
         val user = FirebaseAuth.getInstance().currentUser
         user?.let {
             findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
