@@ -2,6 +2,7 @@ package com.example.tukitakirt.services.user
 
 import com.example.tukitakirt.data.register.RequestUserRegister
 import com.google.android.gms.tasks.Task
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import javax.inject.Inject
 
@@ -11,6 +12,15 @@ class UserServiceImpl  @Inject constructor(private  val dbRef: FirebaseDatabase)
     override suspend fun createUser(request: RequestUserRegister): Task<Void> {
        return dbRef.reference.child("user").child(request.userId).setValue(request)
     }
+
+    //cs-33
+    override suspend fun getUserById(userId: String): DatabaseReference {
+
+        return dbRef.reference.child("user").child(userId)
+
+    }
+
+
 
 
 }

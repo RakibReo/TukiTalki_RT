@@ -2,6 +2,7 @@ package com.example.tukitakirt.repositories
 import com.example.tukitakirt.data.register.RequestUserRegister
 import com.example.tukitakirt.services.user.UserServiceImpl
 import com.google.android.gms.tasks.Task
+import com.google.firebase.database.DatabaseReference
 import javax.inject.Inject
 
 
@@ -13,6 +14,13 @@ class UserRepo  @Inject constructor(private  var service: UserServiceImpl ) {
 
     return service.createUser(requestUserRegister)
 
+
+    }
+
+
+    //CS-34
+    suspend fun getUserById(userId: String): DatabaseReference {
+        return service.getUserById(userId)
 
     }
 

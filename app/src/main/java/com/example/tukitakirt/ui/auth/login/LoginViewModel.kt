@@ -1,4 +1,5 @@
 package com.example.tukitakirt.ui.auth.login
+import RequestUserLogin
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,12 +8,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.tukitakirt.repositories.AuthRepo
 import com.example.tukitakirt.utils.ErrorMessage
 import com.example.tukitakirt.utils.SuccessMessage
-import com.mehedi.tukitalki.data.login.RequestUserLogin
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 //CS-17
+@HiltViewModel
 class LoginViewModel @Inject constructor(private val repo: AuthRepo) : ViewModel()  {
 
     private var _resposne = MutableLiveData<String>()
